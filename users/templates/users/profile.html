@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="profile-section">
+    <h2>Profile</h2>
+    <div class="profile-details">
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>First Name:</strong> {{ user.first_name }}</p>
+      <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+    <div class="profile-actions">
+      <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Edit Profile</a>
+      <a href="{% url 'change_password' %}" class="btn btn-secondary">Change Password</a>
+    </div>
+  </div>
+
+  <div class="order-history">
+    <h2>Order History</h2>
+    {% if orders %}
+      <ul>
+        {% for order in orders %}
+          <li>
+            <p><strong>Date:</strong> {{ order.date }}</p>
+            <p><strong>Car:</strong> {{ order.car }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No orders yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

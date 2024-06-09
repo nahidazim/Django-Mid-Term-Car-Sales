@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Order History</h1>
+  <ul>
+    {% for order in orders %}
+      <li>{{ order.car.name }} - {{ order.date_ordered }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

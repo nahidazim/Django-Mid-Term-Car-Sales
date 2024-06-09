@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+  <h1>Welcome to Car Sales</h1>
+  <div class="image-container">
+  <img src="/media/car_images/Banner.jpg" alt="Car Sales Banner" class="img-fluid">
+</div>
+
+  <form method="get" class="form-inline my-2 my-lg-0">
+    <div class="dropdown">
+      <button class="btn btn-outline-success dropdown-toggle mb-2" type="button" id="brandDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select Brand
+      </button>
+      <div class="dropdown-menu" aria-labelledby="brandDropdown" id="brandList">
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    {% for car in cars %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ car.name }}</h5>
+            <p class="card-text">{{ car.price }} USD</p>
+            <a href="{% url 'car-detail' car.pk %}" class="btn btn-primary mt-auto">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      fetchBrandNames();
+    });
+
+    function fetchBrandNames() {
+      fetch("{% url 'fetch-brands' %}")
+        .then(response => response.json())
+        .then(data => {
+          const brandList = document.getElementById("brandList");
+          brandList.innerHTML = ""; // Clear existing options
+          data.forEach(brand => {
+            const brandLink = document.createElement("a");
+            brandLink.classList.add("dropdown-item");
+            brandLink.href = `?brand=${brand}`;
+            brandLink.textContent = brand;
+            brandList.appendChild(brandLink);
+          });
+        })
+        .catch(error => console.error("Error fetching brands:", error));
+    }
+  </script>
+{% endblock %}
